@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ngunci | Dekripsi</title>
+    <link rel="stylesheet" href="src/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container-lg {
+            text-align: center;
+        }
+    </style>
+  </head>
+  <body class="bg-grad">
+    <!--START CONTENT-->
+    <div
+      class="container-lg"
+    >
+      <div class="text-center">
+        <h1 class="text-white">Dekripsi.</h1>
+        <p class="text-white">
+          Untuk membuka pesan terenkripsi Anda, masukkan teks terenkripsi di
+          bawah ini.<br />Jika pengirim memasang kata sandi untuk enkripsi,
+          pastikan untuk memasukkan <br />kata sandi yang benar untuk membuka
+          pesan.
+        </p>
+        <div class="form-floating">
+          <textarea
+            class="form-control"
+            placeholder="Leave a comment here"
+            id="ciphertext"
+            style="height: 100px"
+          ></textarea>
+          <label for="floatingTextarea2">Masukkan teks terenkripsi:</label>
+        </div>
+        <p class="lead">
+          <input
+            type="text"
+            class="form-control mt-3"
+            id="decryptionKey"
+            placeholder="Password (key)"
+          />
+          <a href="index.html" class="btn btn-secondary mt-3">Kembali</a>
+          <button
+            type="button"
+            class="btn btn-primary mt-3"
+            data-bs-toggle="modal"
+            data-bs-target="#dekripsi"
+            onclick="decrypt()"
+          >
+            Dekripsi
+          </button>
+        </p>
+      </div>
+    </div>
+    <!--END CONTENT-->
+
+    <!--Modal Dekripsi-->
+    <div
+      class="modal fade"
+      id="dekripsi"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Enkripsi</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="hasilenkripsi">
+              <textarea
+                class="form-control"
+                id="plaintext"
+                style="height: 300px"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="popover"
+              data-bs-trigger="hover focus"
+              data-bs-content="Copy ke clipboard"
+              onclick="copy()"
+            >
+              Copy ke Clipboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal Dekripsi END-->
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function decrypt() {
+        var ciphertext = document.getElementById("ciphertext").value;
+        var decryptionKey = document.getElementById("decryptionKey").value;
+
+        // Fungsi untuk mendekripsi teks
+        function decryptText(ciphertext, key) {
+          var bytes = CryptoJS.AES.decrypt(ciphertext, key);
+          var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+          return decryptedText;
+        }
+
+        var decryptedText = decryptText(ciphertext, decryptionKey);
+
+        // Menetapkan hasil dekripsi ke dalam textarea
+        document.getElementById("plaintext").value = decryptedText;
+      }
+
+      function copy() {
+        // Get the text field
+        var copyText = document.getElementById("ciphertext");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        // Alert the copied text
+        alert("Text di copy: " + copyText.value);
+      }
+    </script>
+  </body>
+</html>

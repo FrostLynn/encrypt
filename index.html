@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ngunci | Landing Page</title>
+    <link rel="stylesheet" href="src/main.css">
+    <style>
+      body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container-lg {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="bg-grad">
+  <div class="container-lg">
+    <div class="text-center">
+      <h1 class="text-white">Ngunci.</h1>
+      <p class="text-white">Dengan sistem enkripsi dan logika algoritma kami, Anda bisa mengamankan pesan-pesan Anda dengan aman.<br>Anda juga dapat menentukan sendiri sandi rahasia, sehingga hanya Anda yang bisa membuka pesannya.</p>
+      <p class="lead">
+        <a href="enkripsi.html" class="btn btn-primary">Enkripsi</a>
+        <a href="dekripsi.html" class="btn btn-primary">Dekripsi</a>
+      </p>
+    </div>
+  </div>
+
+<!----------------------------------------------------------------------------------------------------------->
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    function copy() {
+      // Get the text field
+      var copyText = document.getElementById("textHasilEnkripsi");
+
+      // Select the text field
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // For mobile devices
+
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(copyText.value);
+
+      // Alert the copied text
+      alert("Text di copy: " + copyText.value);
+    } 
+  </script>
+</body>
+
+</html>
