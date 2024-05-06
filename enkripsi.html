@@ -53,8 +53,6 @@
           <button
             type="button"
             class="btn btn-primary mt-3"
-            data-bs-toggle="modal"
-            data-bs-target="#enkripsi"
             onclick="encrypt()"
           >
             Enkripsi
@@ -64,33 +62,32 @@
     </div>
     <!--END CONTENT-->
 
-    <!--Modal Enkripsi-->
-    <div
-      class="modal fade"
-      id="enkripsi"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <!-- Modal Error -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Enkripsi</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title" id="errorModalLabel">Error</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="hasilenkripsi">
-              <textarea
-                class="form-control"
-                id="ciphertext"
-                style="height: 300px"
-              ></textarea>
-            </div>
+            <p class="text-danger">Kunci tidak memenuhi syarat untuk AES-128. Harap gunakan kunci dengan panjang 16 karakter (128-bit).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Error End -->
+
+    <!-- Modal Result -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resultModalLabel">Hasil Enkripsi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control" id="encryptedText" style="height: 300px" readonly></textarea>
           </div>
           <div class="modal-footer">
             <button
@@ -107,28 +104,39 @@
         </div>
       </div>
     </div>
-    <!--Modal Enkripsi END-->
+    <!-- Modal Result End -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <script>
       function encrypt() {
         var plaintext = document.getElementById("plaintext").value;
         var encryptionKey = document.getElementById("encryptionKey").value;
 
-        // Fungsi untuk mengenkripsi teks
+        // Check key length
+        if (encryptionKey.length !== 16) {
+          $('#errorModal').modal('show');
+          return;
+        }
+
+        // Function to encrypt text
         function encryptText(text, key) {
-          return CryptoJS.AES.encrypt(text, key).toString();
+          // Using AES-128 for encryption
+          var ciphertext = CryptoJS.AES.encrypt(text, key);
+          return ciphertext.toString();
         }
 
         var encryptedText = encryptText(plaintext, encryptionKey);
 
-        // Menetapkan hasil enkripsi ke dalam textarea
-        document.getElementById("ciphertext").value = encryptedText;
+        // Set the encrypted text into textarea
+        document.getElementById("encryptedText").value = encryptedText;
+        // Show the result modal
+        $('#resultModal').modal('show');
       }
 
       function copy() {
         // Get the text field
-        var copyText = document.getElementById("ciphertext");
+        var copyText = document.getElementById("encryptedText");
 
         // Select the text field
         copyText.select();
