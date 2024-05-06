@@ -11,6 +11,5 @@
   "description": "",
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "cryptojs": "^2.5.3"
   }
 }
